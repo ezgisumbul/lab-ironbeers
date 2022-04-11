@@ -1,1 +1,9 @@
-beers.name
+<div id="beer-list">
+  {{#each beers}}
+    <a href="/beers/{{ id }}">
+      {{> beerpartial}}
+    </a>
+{{/each}}
+</div>
+
+

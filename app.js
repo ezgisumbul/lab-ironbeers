@@ -12,8 +12,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Register the location for handlebars partials here:
-
+// Register the location for handlebars partials here
 //hbs.registerPartials(__dirname + '/views/partials');
 
 hbs.registerPartials(path.join(__dirname, 'views/partials')); // to prevent slash missing etc. issues we can use join method of node
@@ -27,29 +26,38 @@ app.get('/', (req, res) => {
 app.get('/beers', (req, res) => {
   punkAPI
     .getBeers()
-    .then(beersFromApi =>
-      // console.log('Beers from the database: ', beersFromApi);
-      res.render('beers', { pageTitle: 'Beers', beers: beersFromApi })
-    )
+    .then(beers => {
+      console.log('Beers from the database: ', beers);
+      res.render('beers', { pageTitle: 'Beers', beers: beers });
+    })
+    // .then(beers => {
+    //   res.render('beers', { pageTitle: 'Beers', beers: beers });
+    // })
     .catch(error => console.log(error));
 });
 
 app.get('/random-beer', (req, res) => {
   punkAPI
-    .getBeers()
-    .then(beersFromApi => {
-      const beer = beersFromApi[0];
-      // console.log('Beers from the database: ', beersFromApi);
+    .getRandom()
+    .then(beers => {
+      // const beer = beers[0]; // code refactored to use partials
+      console.log('Beers from the database: ', beers);
       res.render('random-beer', {
-        pageTitle: 'Random Beers',
-        beer: beer
+        pageTitle: 'Random Beer',
+        beers: beers
       });
     })
     .catch(error => console.log(error));
 });
 
-app.listen(3000, () => console.log('🏃‍ on port 3000'));
+app.get('/beers/:id', (req, res) => {
+  const id = req.params.id;
+  punkAPI
+    .getBeer(id)
+    .then(beers => {
+      res.render('single-beer', { beers });
+    })
+    .catch(error => console.log(error));
+});
 
-// {const beer = beers[0];
-//   res.render('rondom_beer', { pageTitle: 'Rondom Beers', beer: beer });
-//   })
+app.listen(3000, () => console.log('🏃‍ on port 3000'));

@@ -1,0 +1,14 @@
+{{!-- <h1>{{beer.name}}</h3>
+<h3>{{beer.tagline}}</h4>
+<img src='{{beer.image_url}}' alt='' />
+<p>{{beer.description}}</p> --}}
+<div class="single-beer">
+    {{#each beers}}
+        {{> beerpartial}}
+        {{> singlebeerpartial}}
+    {{/each}}
+</div>
+
+
+
+
